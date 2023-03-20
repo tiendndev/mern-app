@@ -2,16 +2,14 @@
 
 $card-border-radius: 4px;
 
-li.card-item {
+.card-item {
   background-color: #fff;
   padding: $gap;
   border-radius: $card-border-radius;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  margin-bottom: $gap;
   font-size: 1.4rem;
-
-  &:not(:last-child) {
-    margin-bottom: $gap;
-  }
+  cursor: pointer;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 
   img.card-cover {
     display: block;
