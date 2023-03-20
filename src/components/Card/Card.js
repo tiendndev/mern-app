@@ -3,15 +3,19 @@ import "./Card.scss";
 
 function Card(props) {
   const { card } = props;
-  console.log(card.cover);
 
   return (
-    <li className="card-item">
+    <div className="card-item">
       {card.cover && (
-        <img className="card-cover" src={card.cover} alt="tiendndev-img" />
+        <img
+          className="card-cover"
+          src={card.cover}
+          alt="tiendndev-img"
+          onMouseDown={(e) => e.preventDefault}
+        />
       )}
       {card.title}
-    </li>
+    </div>
   );
 }
 
