@@ -1,11 +1,10 @@
 @import "./_setting.scss";
 
 .board-content {
-  // display: flex;
-  // margin: 0 $gap $gap;
+  display: flex;
   height: $board-content-height;
   overflow-x: auto;
-  // overflow-y: hidden;
+  overflow-y: hidden;
 
   &::-webkit-scrollbar {
     -webkit-appearance: none;
@@ -24,5 +23,22 @@
     background-color: rgba(150, 150, 200, 0.1);
     border: 1px dashed #abc;
     margin: 5px 45px 5px 5px;
+  }
+
+  .add-new-column {
+    width: 250px;
+    height: 32px;
+    font-size: 1.6rem;
+    line-height: 32px;
+    padding: 4px 0 4px 15px;
+    margin-left: $gap;
+    cursor: pointer;
+    border-radius: $column-border-radius;
+    color: white;
+    background-color: hsla(0, 0%, 100%, 0.24);
+
+    :hover {
+      background-color: hsla(0, 0%, 100%, 0.34);
+    }
   }
 }
