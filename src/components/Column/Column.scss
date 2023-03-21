@@ -1,7 +1,6 @@
 @import "_setting.scss";
 
 $column-header-height: 36px;
-$column-border-radius: 5px;
 $column-footer-height: 36px;
 $card-border-radius: 4px;
 
@@ -17,7 +16,6 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
 
   > * {
     background-color: $list-bg-color;
-    color: #333;
     padding: 0 8px;
   }
 
@@ -39,11 +37,23 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
     font-size: 1.6rem;
     border-bottom-left-radius: $column-border-radius;
     border-bottom-right-radius: $column-border-radius;
+    color: #888;
+
+    .footer-actions {
+      margin-left: $gap;
+      cursor: pointer;
+
+      &:hover {
+        color: $app-main-text-color;
+      }
+    }
   }
 
   .card-list {
     margin: 0;
-    max-height: calc(#{$column-height} - $column-header-height - $column-footer-height);
+    max-height: calc(
+      #{$column-height} - $column-header-height - $column-footer-height
+    );
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -62,11 +72,13 @@ $column-height: calc(#{$board-content-height} - #{$gap * 2});
     .card-ghost {
       transition: transform 0.18s ease;
       transform: rotateZ(5deg);
+      font-weight: 600;
     }
 
     .card-ghost-drop {
       transition: transform 0.18s ease-in-out;
       transform: rotateZ(0deg);
+      font-weight: 600;
     }
 
     .card-drop-preview {
