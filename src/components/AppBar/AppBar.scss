@@ -3,11 +3,11 @@
 $app-bar-bg-color: #0067a3;
 
 .navbar-app {
-  display: flex;
-  align-items: center;
-  font-size: 1.6rem;
-  font-weight: 600;
-  padding-left: $gap;
-  height: $navbar-app-height;
-  background-color: $app-bar-bg-color;
+    display: flex;
+    align-items: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+    padding-left: $gap;
+    height: $navbar-app-height;
+    background-color: $app-bar-bg-color;
 }
