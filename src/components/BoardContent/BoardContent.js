@@ -18,9 +18,12 @@ import { initialData } from "actions/initialData";
 function BoardContent() {
    const [board, setBoard] = useState({});
    const [columns, setColumns] = useState([]);
-   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
-
    const newColumnInputRef = useRef(null);
+
+   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
+   const toggleOpenNewColumnForm = () => {
+      setOpenNewColumnForm(!openNewColumnForm);
+   };
 
    const [newColumnTitle, setNewColumnTitle] = useState("");
    const handleNewColumnTitleChange = (e) => {
@@ -31,7 +34,6 @@ function BoardContent() {
       const boardFromDB = initialData.boards.find(
          (board) => board.id === "board-1"
       );
-
       if (boardFromDB) {
          setBoard(boardFromDB);
          setColumns(
@@ -40,12 +42,8 @@ function BoardContent() {
       }
    }, []);
 
-   useEffect(() => {
-      if (newColumnInputRef && newColumnInputRef.current) {
-         newColumnInputRef.current.focus();
-      }
-   }, [openNewColumnForm]);
-
+   /* Focus into content and select all content
+      when press Add another column */
    useEffect(() => {
       if (newColumnInputRef && newColumnInputRef.current) {
          newColumnInputRef.current.focus();
@@ -62,7 +60,7 @@ function BoardContent() {
    }
 
    const onColumnDrop = (dropResult) => {
-      // Clone newColumn array with new order when drag column
+      /* Clone newColumn array with new order when drag column */
       let newColumns = [...columns];
       newColumns = applyDrag(newColumns, dropResult);
 
@@ -74,20 +72,15 @@ function BoardContent() {
       setBoard(newBoard);
    };
 
-   // Truyền data từ Component Column (con) lên Component BoardContent (cha)
+   // Transmit data from "Column" (child) into "BoardContent" (parent)
    const onCardDrop = (columnId, dropResult) => {
       if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
          let newColumns = [...columns];
          let currentColumn = newColumns.find((col) => col.id === columnId);
          currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
          currentColumn.cardOrder = currentColumn.cards.map((card) => card.id);
-
          setColumns(newColumns);
       }
-   };
-
-   const toggleOpenNewColumnForm = () => {
-      setOpenNewColumnForm(!openNewColumnForm);
    };
 
    const handleAddNewColumn = () => {
@@ -130,6 +123,7 @@ function BoardContent() {
          newColumns.splice(columnIndexToUpdate, 1);
       } else {
          /* Update Column */
+         console.log(newColumnToUpdate);
          newColumns.splice(columnIndexToUpdate, 1, newColumnToUpdate);
       }
       let newBoard = { ...board };
@@ -196,13 +190,13 @@ function BoardContent() {
                      />
                      <Button
                         variant="success"
-                        size="sm"
+                        size="lg"
                         onClick={handleAddNewColumn}
                      >
                         Add column
                      </Button>
                      <span
-                        className="cancel-new-column"
+                        className="cancel-icon"
                         onClick={toggleOpenNewColumnForm}
                      >
                         <i className="fa fa-trash icon" />
