@@ -1,4 +1,3 @@
-/* Use "absolute import" instead of "relative import" */
 {
    "compilerOptions": {
       "module": "commonjs",
