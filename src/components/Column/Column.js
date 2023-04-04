@@ -16,7 +16,7 @@ import {
 
 function Column(props) {
    const { column, onCardDrop, onUpdateColumn } = props;
-   const cards = mapOrder(column.cards, column.cardOrder, "id");
+   const cards = mapOrder(column.cards, column.cardOrder, "_id");
 
    const [showConfirmModal, setShowConfirmModal] = useState(false);
    const toggleShowConfirmModal = () => setShowConfirmModal(!showConfirmModal);
@@ -77,13 +77,13 @@ function Column(props) {
       const newCardToAdd = {
          id: Math.random().toString(36).substring(2, 5),
          boardId: column.boardId,
-         columnId: column.id,
+         columnId: column._id,
          title: newCardTitle.trim(),
          cover: null,
       };
       let newColumn = cloneDeep(column);
       newColumn.cards.push(newCardToAdd);
-      newColumn.cardOrder.push(newCardToAdd.id);
+      newColumn.cardOrder.push(newCardToAdd._id);
       onUpdateColumn(newColumn);
       setNewCardTitle("");
       toggleOpenNewCardForm(true);
@@ -136,7 +136,7 @@ function Column(props) {
                groupName="col"
                orientation="vertical"
                // Truyền ngược data từ con lên cha bằng cách gọi lại hàm onCardrop() từ cha truyền xuống con
-               onDrop={(dropResult) => onCardDrop(column.id, dropResult)}
+               onDrop={(dropResult) => onCardDrop(column._id, dropResult)}
                getChildPayload={(index) => cards[index]}
                dragClass="card-ghost"
                dropClass="card-ghost-drop"
