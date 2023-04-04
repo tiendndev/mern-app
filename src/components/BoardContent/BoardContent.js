@@ -13,7 +13,7 @@ import "./BoardContent.scss";
 import Column from "components/Column/Column";
 import { mapOrder } from "utilities/sorts";
 import { applyDrag } from "utilities/dragDrop";
-import { initialData } from "actions/initialData";
+import { fetchBoardDetails } from "actions/ApiCall";
 
 function BoardContent() {
    const [board, setBoard] = useState({});
@@ -31,15 +31,12 @@ function BoardContent() {
    };
 
    useEffect(() => {
-      const boardFromDB = initialData.boards.find(
-         (board) => board.id === "board-1"
-      );
-      if (boardFromDB) {
-         setBoard(boardFromDB);
-         setColumns(
-            mapOrder(boardFromDB.columns, boardFromDB.columnOrder, "id")
-         );
-      }
+      const boardId = "642be1fd123f85b5487ae3ee";
+      fetchBoardDetails(boardId).then((board) => {
+         console.log(board);
+         setBoard(board);
+         setColumns(mapOrder(board.columns, board.columnOrder, "_id"));
+      });
    }, []);
 
    /* Focus into content and select all content
@@ -65,7 +62,7 @@ function BoardContent() {
       newColumns = applyDrag(newColumns, dropResult);
 
       let newBoard = { ...board };
-      newBoard.columnOrder = newColumns.map((col) => col.id);
+      newBoard.columnOrder = newColumns.map((col) => col._id);
       newBoard.columns = newColumns;
 
       setColumns(newColumns);
@@ -76,9 +73,9 @@ function BoardContent() {
    const onCardDrop = (columnId, dropResult) => {
       if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
          let newColumns = [...columns];
-         let currentColumn = newColumns.find((col) => col.id === columnId);
+         let currentColumn = newColumns.find((col) => col._id === columnId);
          currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
-         currentColumn.cardOrder = currentColumn.cards.map((card) => card.id);
+         currentColumn.cardOrder = currentColumn.cards.map((card) => card._id);
          setColumns(newColumns);
       }
    };
@@ -91,7 +88,7 @@ function BoardContent() {
 
       const newColumnToAdd = {
          id: Math.random().toString(36).substring(2, 5),
-         boardId: board.id,
+         boardId: board._id,
          title: newColumnTitle.trim(),
          cardOrder: [],
          cards: [],
@@ -101,7 +98,7 @@ function BoardContent() {
       newColumns.push(newColumnToAdd);
 
       let newBoard = { ...board };
-      newBoard.columnOrder = newColumns.map((col) => col.id);
+      newBoard.columnOrder = newColumns.map((col) => col._id);
       newBoard.columns = newColumns;
 
       setColumns(newColumns);
@@ -111,11 +108,11 @@ function BoardContent() {
    };
 
    const onUpdateColumn = (newColumnToUpdate) => {
-      const columnIdToUpdate = newColumnToUpdate.id;
+      const columnIdToUpdate = newColumnToUpdate._id;
 
       let newColumns = [...columns];
       const columnIndexToUpdate = newColumns.findIndex(
-         (item) => item.id === columnIdToUpdate
+         (item) => item._id === columnIdToUpdate
       );
 
       if (newColumnToUpdate._destroy) {
@@ -123,11 +120,10 @@ function BoardContent() {
          newColumns.splice(columnIndexToUpdate, 1);
       } else {
          /* Update Column */
-         console.log(newColumnToUpdate);
          newColumns.splice(columnIndexToUpdate, 1, newColumnToUpdate);
       }
       let newBoard = { ...board };
-      newBoard.columnOrder = newColumns.map((col) => col.id);
+      newBoard.columnOrder = newColumns.map((col) => col._id);
       newBoard.columns = newColumns;
 
       setColumns(newColumns);
