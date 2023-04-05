@@ -20,6 +20,7 @@ import {
    updateColumn,
    updateCard,
 } from "actions/ApiCall";
+import { flushSync } from "react-dom";
 
 function BoardContent() {
    const [board, setBoard] = useState({});
@@ -63,7 +64,7 @@ function BoardContent() {
 
    const onColumnDrop = (dropResult) => {
       /* Clone newColumn array with "new order" when drag column */
-      let newColumns = [...columns];
+      let newColumns = cloneDeep(columns);
       newColumns = applyDrag(newColumns, dropResult);
 
       let newBoard = cloneDeep(board);
@@ -83,13 +84,13 @@ function BoardContent() {
    // Transmit data from "Column" (child) into "BoardContent" (parent)
    const onCardDrop = (columnId, dropResult) => {
       if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
-         let newColumns = [...columns];
+         let newColumns = cloneDeep(columns);
 
          let currentColumn = newColumns.find((col) => col._id === columnId);
          currentColumn.cards = applyDrag(currentColumn.cards, dropResult);
          currentColumn.cardOrder = currentColumn.cards.map((i) => i._id);
 
-         setColumns(newColumns);
+         flushSync(() => setColumns(newColumns));
          if (
             dropResult.removedIndex !== null &&
             dropResult.addedIndex !== null
@@ -130,10 +131,10 @@ function BoardContent() {
       };
 
       createNewColumn(newColumnToAdd).then((column) => {
-         let newColumns = [...columns];
+         let newColumns = cloneDeep(columns);
          newColumns.push(column);
 
-         let newBoard = { ...board };
+         let newBoard = cloneDeep(board);
          newBoard.columnOrder = newColumns.map((col) => col._id);
          newBoard.columns = newColumns;
 
