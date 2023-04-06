@@ -29,11 +29,11 @@ function ConfirmModal(props) {
 
          <Modal.Footer>
             <Button variant="secondary" onClick={() => onAction("close")}>
-               Close
+               {MODAL_ACTION_CLOSE}
             </Button>
 
             <Button variant="primary" onClick={() => onAction("confirm")}>
-               Confirm
+               {MODAL_ACTION_CONFIRM}
             </Button>
          </Modal.Footer>
       </Modal>
